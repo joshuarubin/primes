@@ -22,6 +22,11 @@ func TestEratosthenes(t *testing.T) {
 			}
 		}
 		So(numPrimes, ShouldEqual, 1229)
+		ps := s.ListPrimes()
+		So(len(ps), ShouldEqual, 1230)
+		for _, p := range ps {
+			So(isPrime(p), ShouldBeTrue)
+		}
 	})
 }
 
