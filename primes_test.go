@@ -12,7 +12,7 @@ func TestPrimes(t *testing.T) {
 	Convey("Between should work", t, func() {
 		Convey("for invalid algorithms", func() {
 			primes := Between(0, max, SieveAlgo(999))
-			So(primes, ShouldResemble, []uint64{})
+			So(primes, ShouldResemble, []uint64(nil))
 		})
 
 	Loop:

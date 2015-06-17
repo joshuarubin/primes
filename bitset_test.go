@@ -12,21 +12,34 @@ func TestBitSet(t *testing.T) {
 		s := NewBitSet(9)
 		So(s.Len(), ShouldEqual, 2)
 		So(s, ShouldResemble, BitSet{0, 0})
+		So(s.IsSet(0), ShouldBeFalse)
 		So(s.IsSet(6), ShouldBeFalse)
+		So(s.Max(), ShouldEqual, 15)
 
 		s.SetAll()
+		So(s.IsSet(0), ShouldBeTrue)
 		So(s.IsSet(6), ShouldBeTrue)
 		So(s, ShouldResemble, BitSet{math.MaxUint8, math.MaxUint8})
 
 		So(s.IsSet(11), ShouldBeTrue)
 		s.Unset(11)
 		So(s.IsSet(11), ShouldBeFalse)
-		So(s, ShouldResemble, BitSet{math.MaxUint8, math.MaxUint8 - (11 % 8) - 1})
+		So(s, ShouldResemble, BitSet{math.MaxUint8, math.MaxUint8 - uint8(math.Pow(float64(2), float64(11%8)))})
 
 		So(s.IsSet(3), ShouldBeTrue)
 		s.Unset(3)
 		So(s.IsSet(3), ShouldBeFalse)
-		So(s, ShouldResemble, BitSet{math.MaxUint8 - (3 % 8) - 1, math.MaxUint8 - (11 % 8) - 1})
+		So(s, ShouldResemble, BitSet{
+			math.MaxUint8 - uint8(math.Pow(float64(2), float64(3%8))),
+			math.MaxUint8 - uint8(math.Pow(float64(2), float64(11%8))),
+		})
+
+		So(len(s.ListSet()), ShouldEqual, 14)
+		So(s.ListSet(), ShouldResemble, []uint64{
+			0, 1, 2, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15,
+		})
+
+		So(s.ListUnset(), ShouldResemble, []uint64{3, 11})
 
 		s.Set(3)
 		s.Set(11)

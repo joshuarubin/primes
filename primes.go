@@ -12,22 +12,20 @@ import (
 func Between(a, b uint64, algo SieveAlgo) []uint64 {
 	start := time.Now()
 
-	if b < a {
-		// ensure a <= b
+	if b < a { // ensure a <= b
 		a, b = b, a
 	}
 
-	ret := []uint64{}
 	var s Sieve
-
 	switch algo {
 	case EratosthenesAlgo:
 		s = NewEratosthenes(b)
 	default:
 		fmt.Fprintf(os.Stderr, "unknown sieve algorithm: %v", algo)
-		return ret
+		return nil
 	}
 
+	ret := make([]uint64, 0, b-a+1)
 	for i := a; i <= b; i++ {
 		if s.IsPrime(i) {
 			ret = append(ret, i)

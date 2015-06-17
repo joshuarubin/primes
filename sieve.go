@@ -6,6 +6,7 @@ import "math"
 type Sieve interface {
 	IsPrime(uint64) bool
 	Len() uint64
+	ListPrimes() []uint64
 }
 
 func sqrt(val uint64) uint64 {
