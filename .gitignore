@@ -1,3 +1,4 @@
 /primes
 /.acc.out
 /.coveralls-stamp
+/cmd/primes/primes

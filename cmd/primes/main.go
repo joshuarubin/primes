@@ -30,7 +30,7 @@ func join(slice []uint64, sep string) string {
 func init() {
 	app.Name = "primes"
 	app.Version = "1.0.0"
-	app.Usage = "primes <int> <int>"
+	app.Usage = "primes [-p] <int> <int>"
 	app.Authors = []cli.Author{
 		{Name: "Joshua Rubin", Email: "jrubin@zvelo.com"},
 	}
@@ -46,7 +46,8 @@ func init() {
 
 func before(c *cli.Context) error {
 	if len(c.Args()) < 2 {
-		fmt.Println("need two integers")
+		cli.ShowAppHelp(c)
+		fmt.Println("missing one or both integers")
 		os.Exit(1)
 	}
 
