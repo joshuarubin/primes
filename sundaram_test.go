@@ -15,16 +15,16 @@ func TestSundaram(t *testing.T) {
 		for i := uint64(0); i <= max; i++ {
 			if s.IsPrime(i) {
 				numPrimes++
-				So(isPrime(i), ShouldBeTrue)
+				So(IsPrime(i), ShouldBeTrue)
 			} else {
-				So(isPrime(i), ShouldBeFalse)
+				So(IsPrime(i), ShouldBeFalse)
 			}
 		}
 		So(numPrimes, ShouldEqual, 1229)
 		ps := s.ListPrimes()
 		So(len(ps), ShouldEqual, 1230)
 		for _, p := range ps {
-			So(isPrime(p), ShouldBeTrue)
+			So(IsPrime(p), ShouldBeTrue)
 		}
 	})
 }

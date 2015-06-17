@@ -1,7 +1,6 @@
 package primes
 
 import (
-	"math"
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
@@ -12,8 +11,10 @@ func TestPrimes(t *testing.T) {
 
 	Convey("Between should work", t, func() {
 		Convey("for invalid algorithms", func() {
-			primes := Between(0, max, SieveAlgo(999))
+			primes, err := Between(0, max, SieveAlgo(999), false)
 			So(primes, ShouldResemble, []uint64(nil))
+			So(err, ShouldResemble, ErrUnknownSieveAlgo(999))
+			So(err.Error(), ShouldEqual, "unknown sieve algorithm: SieveAlgo(999)")
 		})
 
 	Loop:
@@ -24,30 +25,12 @@ func TestPrimes(t *testing.T) {
 				continue Loop
 			}
 
-			primes := Between(max, 0, algo)
+			primes, err := Between(max, 0, algo, false)
+			So(err, ShouldBeNil)
 			So(len(primes), ShouldEqual, 1229)
 			for _, val := range primes {
-				So(isPrime(val), ShouldBeTrue)
+				So(IsPrime(val), ShouldBeTrue)
 			}
 		}
 	})
-}
-
-// a very naïve approach to testing for primes
-func isPrime(val uint64) bool {
-	if val == 0 || val == 1 {
-		return false
-	}
-
-	if val == 2 {
-		return true
-	}
-
-	for i := uint64(2); i <= uint64(math.Sqrt(float64(val))); i++ {
-		if val%i == 0 {
-			return false
-		}
-	}
-
-	return true
 }

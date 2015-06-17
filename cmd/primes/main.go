@@ -1,7 +1,8 @@
 package main
 
 import (
-	"fmt"
+	"io"
+	"io/ioutil"
 	"log"
 	"os"
 	"runtime/pprof"
@@ -39,6 +40,10 @@ func init() {
 			Name:  "profile",
 			Usage: "write profiling output to this file",
 		},
+		cli.BoolFlag{
+			Name:  "stats, s",
+			Usage: "print stats to stderr",
+		},
 	}
 }
 
@@ -63,6 +68,8 @@ func before(c *cli.Context) error {
 		algo = primes.EratosthenesAlgo
 	case "sundaram":
 		algo = primes.SundaramAlgo
+	case "atkin":
+		algo = primes.AtkinAlgo
 	default:
 		cli.ShowAppHelp(c)
 		log.Fatalf("unknown algorithm: %s\n", algopt)
@@ -72,7 +79,10 @@ func before(c *cli.Context) error {
 }
 
 func run(c *cli.Context) {
+	p := c.GlobalBool("print")
+	s := c.GlobalBool("stats")
 	fn := c.GlobalString("profile")
+
 	if len(fn) > 0 {
 		f, err := os.Create(fn)
 		if err != nil {
@@ -82,16 +92,16 @@ func run(c *cli.Context) {
 		defer pprof.StopCPUProfile()
 	}
 
-	ps := primes.Between(args[0], args[1], algo)
-	l := len(ps)
-	if c.GlobalBool("print") && l > 0 {
-		for i, p := range ps {
-			fmt.Printf("%d", p)
-			if i < l-1 {
-				fmt.Printf(", ")
-			}
-		}
-		fmt.Println()
+	var w io.Writer
+	w = ioutil.Discard
+	if p {
+		w = os.Stdout
+	} else {
+		s = true
+	}
+
+	if err := primes.Write(w, args[0], args[1], algo, s); err != nil {
+		log.Fatal(err)
 	}
 }
 

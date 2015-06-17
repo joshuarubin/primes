@@ -39,10 +39,25 @@ func (s BitSet) Set(i uint64) BitSet {
 	return s
 }
 
-// IsSet returns wheter the bit at index i is set
+// IsSet returns whether the bit at index i is set
 func (s BitSet) IsSet(i uint64) bool {
 	b, mask := s.byteFor(i)
 	return *b&mask > 0
+}
+
+// Flip toggles the bit at index i and returns the new value
+func (s BitSet) Flip(i uint64) bool {
+	b, mask := s.byteFor(i)
+
+	if *b&mask == 0 {
+		// bit is not set
+		*b = *b | mask
+		return true
+	}
+
+	// bit is set
+	*b = *b & flipBits(mask)
+	return false
 }
 
 func (s BitSet) byteFor(i uint64) (b *byte, mask byte) {
