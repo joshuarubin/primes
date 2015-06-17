@@ -46,6 +46,7 @@ func before(c *cli.Context) error {
 	for i := 0; i < 2; i++ {
 		val, err := strconv.ParseUint(c.Args()[i], 10, 64)
 		if err != nil {
+			cli.ShowAppHelp(c)
 			fmt.Fprintf(os.Stderr, "error parsing arg %d: %s\n", i, err)
 			os.Exit(1)
 		}
@@ -58,7 +59,9 @@ func before(c *cli.Context) error {
 		fmt.Fprintf(os.Stderr, "using sieve of eratosthenes algorithm\n")
 		algo = primes.EratosthenesAlgo
 	default:
+		cli.ShowAppHelp(c)
 		fmt.Fprintf(os.Stderr, "unknown algorithm: %s\n", algopt)
+		os.Exit(1)
 	}
 
 	return nil
@@ -68,7 +71,6 @@ func run(c *cli.Context) {
 	ps := primes.Between(args[0], args[1], algo)
 	l := len(ps)
 	if c.GlobalBool("print") && l > 0 {
-		// fmt.Printf("%s\n", join(ps, ", "))
 		for i, p := range ps {
 			fmt.Printf("%d", p)
 			if i < l-1 {
