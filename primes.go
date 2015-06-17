@@ -34,12 +34,13 @@ func Between(a, b uint64, algo SieveAlgo) []uint64 {
 		}
 	}
 
-	fmt.Fprintf(os.Stderr, "found %s primes between %s and %s (inclusive) in %v using %s of memory\n",
+	fmt.Fprintf(os.Stderr, "found %s primes between %s and %s (inclusive) in %v using %s of memory using %s\n",
 		humanize.Comma(int64(len(ret))),
 		humanize.Comma(int64(a)),
 		humanize.Comma(int64(b)),
 		time.Now().Sub(start),
-		humanize.Bytes(s.Len()))
+		humanize.Bytes(s.Len()),
+		algo)
 
 	return ret
 }

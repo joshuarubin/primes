@@ -4,9 +4,9 @@ package primes
 
 import "fmt"
 
-const _SieveAlgo_name = "EratosthenesAlgo"
+const _SieveAlgo_name = "EratosthenesAlgoSundaramAlgoAtkinAlgo"
 
-var _SieveAlgo_index = [...]uint8{0, 16}
+var _SieveAlgo_index = [...]uint8{0, 16, 28, 37}
 
 func (i SieveAlgo) String() string {
 	if i < 0 || i+1 >= SieveAlgo(len(_SieveAlgo_index)) {

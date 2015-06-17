@@ -56,7 +56,6 @@ func before(c *cli.Context) error {
 	algopt := c.GlobalString("algorithm")
 	switch algopt {
 	case "eratosthenes", "":
-		fmt.Fprintf(os.Stderr, "using sieve of eratosthenes algorithm\n")
 		algo = primes.EratosthenesAlgo
 	default:
 		cli.ShowAppHelp(c)

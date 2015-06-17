@@ -12,15 +12,15 @@ endif
 all: build
 
 lint:
-	golint ./...
-	go vet ./...
+	@golint ./... | grep -v '^sievealgo_string.go:' || true
+	@go vet ./...
 
-test:
+test: sievealgo_string.go
 	godep go test -v -race ./...
 
 coverage: .acc.out
 
-sievealgo_string.go: sieve.go
+sievealgo_string.go: sievealgo.go
 	go generate
 
 .acc.out: $(GO_FILES) sievealgo_string.go
