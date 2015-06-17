@@ -2,6 +2,11 @@ package primes
 
 import "math"
 
+const (
+	// Byte is 8 bits
+	Byte = 8
+)
+
 // BitSet is an object that makes working with large numbers of boolean values
 // simple and memory efficient
 type BitSet []byte
@@ -41,20 +46,20 @@ func (s BitSet) IsSet(i uint64) bool {
 }
 
 func (s BitSet) byteFor(i uint64) (b *byte, mask byte) {
-	b = &s[i/8]
-	mask = byte(1) << (i % 8)
+	b = &s[i/Byte]
+	mask = byte(1) << (i % Byte)
 	return
 }
 
 // NewBitSet returns a new BitSet big enough to hold at least l values
 func NewBitSet(l uint64) BitSet {
-	numBlocks := uint64(math.Floor(float64(l)/8)) + 1
+	numBlocks := uint64(math.Floor(float64(l)/Byte)) + 1
 	return make(BitSet, int(numBlocks))
 }
 
 // Max returns the highest value that can be set
 func (s BitSet) Max() uint64 {
-	return s.Len()*8 - 1
+	return s.Len()*Byte - 1
 }
 
 // ListSet returns a set of all enabled indexes

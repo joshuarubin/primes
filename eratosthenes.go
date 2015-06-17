@@ -7,19 +7,19 @@ type Eratosthenes struct {
 }
 
 // NewEratosthenes returns a new Eratosthenes calculated for all values from 0
-// to the nearest multiple of 8 greater than l
+// to the nearest byte greater than l
 func NewEratosthenes(l uint64) Sieve {
 	// initialize the sieve with all bits set but unset 0 and 1 (as they are
 	// not-prime)
 	s := Eratosthenes{NewBitSet(l).SetAll().Unset(0).Unset(1)}
 
-	for i := uint64(2); i <= sqrt(s.Len()*8); i++ {
-		if !s.IsSet(i) {
+	for i := uint64(2); i <= sqrt(s.Max()); i++ {
+		if !s.IsPrime(i) {
 			continue
 		}
 
 		// i is prime, so disable all multiples of it as prime
-		for next := 2 * i; next < s.Len()*8; next += i {
+		for next := 2 * i; next < s.Len()*Byte; next += i {
 			s.Unset(next)
 		}
 	}

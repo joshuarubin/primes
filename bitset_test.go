@@ -24,14 +24,14 @@ func TestBitSet(t *testing.T) {
 		So(s.IsSet(11), ShouldBeTrue)
 		s.Unset(11)
 		So(s.IsSet(11), ShouldBeFalse)
-		So(s, ShouldResemble, BitSet{math.MaxUint8, math.MaxUint8 - uint8(math.Pow(float64(2), float64(11%8)))})
+		So(s, ShouldResemble, BitSet{math.MaxUint8, math.MaxUint8 - uint8(math.Pow(float64(2), float64(11%Byte)))})
 
 		So(s.IsSet(3), ShouldBeTrue)
 		s.Unset(3)
 		So(s.IsSet(3), ShouldBeFalse)
 		So(s, ShouldResemble, BitSet{
-			math.MaxUint8 - uint8(math.Pow(float64(2), float64(3%8))),
-			math.MaxUint8 - uint8(math.Pow(float64(2), float64(11%8))),
+			math.MaxUint8 - uint8(math.Pow(float64(2), float64(3%Byte))),
+			math.MaxUint8 - uint8(math.Pow(float64(2), float64(11%Byte))),
 		})
 
 		So(len(s.ListSet()), ShouldEqual, 14)
