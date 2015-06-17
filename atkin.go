@@ -21,10 +21,6 @@ func NewAtkin(limit uint64) Sieve {
 		limit:  limit,
 	}
 
-	if limit < 2 {
-		return ret
-	}
-
 	for p := uint64(2); p <= ret.Max(); p = ret.pg.Next() {
 		ret.Set(p)
 	}
