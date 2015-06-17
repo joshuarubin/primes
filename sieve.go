@@ -11,7 +11,3 @@ type Sieve interface {
 func sqrt(val uint64) uint64 {
 	return uint64(math.Sqrt(float64(val)))
 }
-
-func flipBits(b byte) byte {
-	return math.MaxUint8 &^ b
-}

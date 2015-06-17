@@ -49,3 +49,7 @@ func NewBitSet(l uint64) BitSet {
 	numBlocks := uint64(math.Floor(float64(l)/8)) + 1
 	return make(BitSet, int(numBlocks))
 }
+
+func flipBits(b byte) byte {
+	return math.MaxUint8 &^ b
+}
