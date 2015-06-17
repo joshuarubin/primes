@@ -20,8 +20,10 @@ func Between(a, b uint64, algo SieveAlgo) []uint64 {
 	switch algo {
 	case EratosthenesAlgo:
 		s = NewEratosthenes(b)
+	case SundaramAlgo:
+		s = NewSundaram(b)
 	default:
-		fmt.Fprintf(os.Stderr, "unknown sieve algorithm: %v", algo)
+		fmt.Fprintf(os.Stderr, "unknown sieve algorithm: %v\n", algo)
 		return nil
 	}
 

@@ -6,11 +6,11 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
-func TestEratosthenes(t *testing.T) {
-	Convey("Eratosthene algorithm should work", t, func() {
+func TestSundaram(t *testing.T) {
+	Convey("Sundaram algorithm should work", t, func() {
 		max := uint64(10000)
-		s := NewEratosthenes(max)
-		So(s.Len(), ShouldEqual, 1251)
+		s := NewSundaram(max)
+		So(s.Len(), ShouldEqual, 2502)
 		numPrimes := 0
 		for i := uint64(0); i <= max; i++ {
 			if s.IsPrime(i) {

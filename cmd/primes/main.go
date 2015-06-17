@@ -33,7 +33,7 @@ func init() {
 		},
 		cli.StringFlag{
 			Name:  "algorithm, a",
-			Usage: "which algorithm to use [eratosthenes]",
+			Usage: "which algorithm to use [eratosthenes, sundaram]",
 		},
 		cli.StringFlag{
 			Name:  "profile",
@@ -61,6 +61,8 @@ func before(c *cli.Context) error {
 	switch algopt {
 	case "eratosthenes", "":
 		algo = primes.EratosthenesAlgo
+	case "sundaram":
+		algo = primes.SundaramAlgo
 	default:
 		cli.ShowAppHelp(c)
 		log.Fatalf("unknown algorithm: %s\n", algopt)

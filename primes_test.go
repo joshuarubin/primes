@@ -1,6 +1,7 @@
 package primes
 
 import (
+	"math"
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
@@ -18,7 +19,7 @@ func TestPrimes(t *testing.T) {
 	Loop:
 		for _, algo := range SieveAlgos {
 			switch algo {
-			case SundaramAlgo, AtkinAlgo:
+			case AtkinAlgo:
 				Print("TODO(jrubin) enable prime test for ", algo, "\n")
 				continue Loop
 			}
@@ -30,4 +31,23 @@ func TestPrimes(t *testing.T) {
 			}
 		}
 	})
+}
+
+// a very naïve approach to testing for primes
+func isPrime(val uint64) bool {
+	if val == 0 || val == 1 {
+		return false
+	}
+
+	if val == 2 {
+		return true
+	}
+
+	for i := uint64(2); i <= uint64(math.Sqrt(float64(val))); i++ {
+		if val%i == 0 {
+			return false
+		}
+	}
+
+	return true
 }

@@ -51,10 +51,15 @@ func (s BitSet) byteFor(i uint64) (b *byte, mask byte) {
 	return
 }
 
-// NewBitSet returns a new BitSet big enough to hold at least l values
-func NewBitSet(l uint64) BitSet {
-	numBlocks := uint64(math.Floor(float64(l)/Byte)) + 1
-	return make(BitSet, int(numBlocks))
+// BitSetSize returns the number of bytes required for the BitSet to contain at
+// least n values
+func BitSetSize(n uint64) uint64 {
+	return uint64(math.Floor(float64(n)/Byte)) + 1
+}
+
+// NewBitSet returns a new BitSet big enough to hold at least n values
+func NewBitSet(n uint64) BitSet {
+	return make(BitSet, int(BitSetSize(n)))
 }
 
 // Max returns the highest value that can be set

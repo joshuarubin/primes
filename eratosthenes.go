@@ -1,17 +1,17 @@
 package primes
 
-// Eratosthenes is a bitset that sets bits at each index to 1 if the index
-// number itself is a prime
+// Eratosthenes is a Sieve that is calculated using the sieve of eratosthenes
+// algorithm
 type Eratosthenes struct {
 	BitSet
 }
 
 // NewEratosthenes returns a new Eratosthenes calculated for all values from 0
-// to the nearest byte greater than l
-func NewEratosthenes(l uint64) Sieve {
+// to the nearest byte greater than n
+func NewEratosthenes(n uint64) Sieve {
 	// initialize the sieve with all bits set but unset 0 and 1 (as they are
 	// not-prime)
-	s := Eratosthenes{NewBitSet(l).SetAll().Unset(0).Unset(1)}
+	s := Eratosthenes{NewBitSet(n).SetAll().Unset(0).Unset(1)}
 
 	for i := uint64(2); i <= sqrt(s.Max()); i++ {
 		if !s.IsPrime(i) {
