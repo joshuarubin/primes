@@ -36,6 +36,12 @@ func init() {
 	}
 	app.Before = before
 	app.Action = run
+	app.Flags = []cli.Flag{
+		cli.BoolFlag{
+			Name:  "print, p",
+			Usage: "print the primes to stdout, comma separated",
+		},
+	}
 }
 
 func before(c *cli.Context) error {
@@ -58,7 +64,7 @@ func before(c *cli.Context) error {
 
 func run(c *cli.Context) {
 	ps := primes.Between(args[0], args[1])
-	if len(ps) > 0 {
+	if c.GlobalBool("print") && len(ps) > 0 {
 		fmt.Printf("%s\n", join(ps, ", "))
 	}
 }
