@@ -1,14 +1,16 @@
 package primes
 
+import "github.com/joshuarubin/primes/bitset"
+
 // Sundaram is a Sieve that is calculated using the sieve of sundaram algorithm
 type Sundaram struct {
-	BitSet
+	bitset.Bitset
 }
 
 // NewSundaram returns a new Sundaram calculated for all values from 0 to the
 // nearest byte greater than n
 func NewSundaram(n uint64) Sieve {
-	s := NewBitSet(n)
+	s := bitset.New(n)
 
 	imax := sqrt(s.Max())
 	for i := uint64(1); i <= imax; i++ {
@@ -18,7 +20,7 @@ func NewSundaram(n uint64) Sieve {
 		}
 	}
 
-	ret := Sundaram{NewBitSet(n).Set(2).Set(3)}
+	ret := Sundaram{bitset.New(n).Set(2).Set(3)}
 	imax = (s.Max() - 1) / 2
 	for i := uint64(2); i <= imax; i++ {
 		if !s.IsSet(i) {
@@ -42,5 +44,5 @@ func (s Sundaram) ListPrimes() []uint64 {
 // Len returns the size of the BitSet in bytes
 func (s Sundaram) Len() uint64 {
 	// twice the bitset size since 2 were required
-	return s.BitSet.Len() * 2
+	return s.Bitset.Len() * 2
 }

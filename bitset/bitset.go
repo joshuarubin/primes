@@ -1,4 +1,4 @@
-package primes
+package bitset
 
 import "math"
 
@@ -7,17 +7,17 @@ const (
 	Byte = 8
 )
 
-// BitSet is an object that makes working with large numbers of boolean values
+// Bitset is an object that makes working with large numbers of boolean values
 // simple and memory efficient
-type BitSet []byte
+type Bitset []byte
 
-// Len returns the size of the BitSet in bytes
-func (s BitSet) Len() uint64 {
+// Len returns the size of the Bitset in bytes
+func (s Bitset) Len() uint64 {
 	return uint64(len(s))
 }
 
-// SetAll enables all bits in the BitSet
-func (s BitSet) SetAll() BitSet {
+// SetAll enables all bits in the Bitset
+func (s Bitset) SetAll() Bitset {
 	for i := 0; i < len(s); i++ {
 		s[i] = math.MaxUint8
 	}
@@ -26,27 +26,27 @@ func (s BitSet) SetAll() BitSet {
 }
 
 // Unset the bit at index i
-func (s BitSet) Unset(i uint64) BitSet {
+func (s Bitset) Unset(i uint64) Bitset {
 	b, mask := s.byteFor(i)
 	*b = *b & flipBits(mask)
 	return s
 }
 
 // Set the bit at index i
-func (s BitSet) Set(i uint64) BitSet {
+func (s Bitset) Set(i uint64) Bitset {
 	b, mask := s.byteFor(i)
 	*b = *b | mask
 	return s
 }
 
 // IsSet returns whether the bit at index i is set
-func (s BitSet) IsSet(i uint64) bool {
+func (s Bitset) IsSet(i uint64) bool {
 	b, mask := s.byteFor(i)
 	return *b&mask > 0
 }
 
 // Flip toggles the bit at index i and returns the new value
-func (s BitSet) Flip(i uint64) bool {
+func (s Bitset) Flip(i uint64) bool {
 	b, mask := s.byteFor(i)
 
 	if *b&mask == 0 {
@@ -60,30 +60,30 @@ func (s BitSet) Flip(i uint64) bool {
 	return false
 }
 
-func (s BitSet) byteFor(i uint64) (b *byte, mask byte) {
+func (s Bitset) byteFor(i uint64) (b *byte, mask byte) {
 	b = &s[i/Byte]
 	mask = byte(1) << (i % Byte)
 	return
 }
 
-// BitSetSize returns the number of bytes required for the BitSet to contain at
+// Size returns the number of bytes required for the Bitset to contain at
 // least n values
-func BitSetSize(n uint64) uint64 {
+func Size(n uint64) uint64 {
 	return uint64(math.Floor(float64(n)/Byte)) + 1
 }
 
-// NewBitSet returns a new BitSet big enough to hold at least n values
-func NewBitSet(n uint64) BitSet {
-	return make(BitSet, int(BitSetSize(n)))
+// New returns a new Bitset big enough to hold at least n values
+func New(n uint64) Bitset {
+	return make(Bitset, int(Size(n)))
 }
 
 // Max returns the highest value that can be set
-func (s BitSet) Max() uint64 {
+func (s Bitset) Max() uint64 {
 	return s.Len()*Byte - 1
 }
 
 // ListSet returns a set of all enabled indexes
-func (s BitSet) ListSet() []uint64 {
+func (s Bitset) ListSet() []uint64 {
 	ret := make([]uint64, 0, s.Max()+1)
 
 	for i := uint64(0); i <= s.Max(); i++ {
@@ -96,7 +96,7 @@ func (s BitSet) ListSet() []uint64 {
 }
 
 // ListUnset returns a set of all unset indexes
-func (s BitSet) ListUnset() []uint64 {
+func (s Bitset) ListUnset() []uint64 {
 	ret := make([]uint64, 0, s.Max()+1)
 
 	for i := uint64(0); i <= s.Max(); i++ {

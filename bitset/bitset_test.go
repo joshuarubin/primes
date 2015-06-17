@@ -1,4 +1,4 @@
-package primes
+package bitset
 
 import (
 	"math"
@@ -7,11 +7,11 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
-func TestBitSet(t *testing.T) {
-	Convey("BitSet should work", t, func() {
-		s := NewBitSet(9)
+func TestBitset(t *testing.T) {
+	Convey("Bitset should work", t, func() {
+		s := New(9)
 		So(s.Len(), ShouldEqual, 2)
-		So(s, ShouldResemble, BitSet{0, 0})
+		So(s, ShouldResemble, Bitset{0, 0})
 		So(s.IsSet(0), ShouldBeFalse)
 		So(s.IsSet(6), ShouldBeFalse)
 		So(s.Max(), ShouldEqual, 15)
@@ -20,17 +20,17 @@ func TestBitSet(t *testing.T) {
 			s.SetAll()
 			So(s.IsSet(0), ShouldBeTrue)
 			So(s.IsSet(6), ShouldBeTrue)
-			So(s, ShouldResemble, BitSet{math.MaxUint8, math.MaxUint8})
+			So(s, ShouldResemble, Bitset{math.MaxUint8, math.MaxUint8})
 
 			So(s.IsSet(11), ShouldBeTrue)
 			s.Unset(11)
 			So(s.IsSet(11), ShouldBeFalse)
-			So(s, ShouldResemble, BitSet{math.MaxUint8, math.MaxUint8 - uint8(math.Pow(float64(2), float64(11%Byte)))})
+			So(s, ShouldResemble, Bitset{math.MaxUint8, math.MaxUint8 - uint8(math.Pow(float64(2), float64(11%Byte)))})
 
 			So(s.IsSet(3), ShouldBeTrue)
 			s.Unset(3)
 			So(s.IsSet(3), ShouldBeFalse)
-			So(s, ShouldResemble, BitSet{
+			So(s, ShouldResemble, Bitset{
 				math.MaxUint8 - uint8(math.Pow(float64(2), float64(3%Byte))),
 				math.MaxUint8 - uint8(math.Pow(float64(2), float64(11%Byte))),
 			})
@@ -44,7 +44,7 @@ func TestBitSet(t *testing.T) {
 
 			s.Set(3)
 			s.Set(11)
-			So(s, ShouldResemble, BitSet{math.MaxUint8, math.MaxUint8})
+			So(s, ShouldResemble, Bitset{math.MaxUint8, math.MaxUint8})
 
 			// test for out of bounds
 			So(func() { s.Set(16) }, ShouldPanic)
@@ -56,18 +56,18 @@ func TestBitSet(t *testing.T) {
 			So(s.IsSet(0), ShouldBeFalse)
 			s.Flip(0)
 			So(s.IsSet(0), ShouldBeTrue)
-			So(s, ShouldResemble, BitSet{1, 0})
+			So(s, ShouldResemble, Bitset{1, 0})
 			s.Flip(0)
 			So(s.IsSet(0), ShouldBeFalse)
-			So(s, ShouldResemble, BitSet{0, 0})
+			So(s, ShouldResemble, Bitset{0, 0})
 
 			So(s.IsSet(11), ShouldBeFalse)
 			s.Flip(11)
 			So(s.IsSet(11), ShouldBeTrue)
-			So(s, ShouldResemble, BitSet{0, 8})
+			So(s, ShouldResemble, Bitset{0, 8})
 			s.Flip(11)
 			So(s.IsSet(11), ShouldBeFalse)
-			So(s, ShouldResemble, BitSet{0, 0})
+			So(s, ShouldResemble, Bitset{0, 0})
 		})
 	})
 }
