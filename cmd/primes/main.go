@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
+	"runtime/pprof"
 	"strconv"
 
 	"github.com/codegangsta/cli"
@@ -33,22 +35,24 @@ func init() {
 			Name:  "algorithm, a",
 			Usage: "which algorithm to use [eratosthenes]",
 		},
+		cli.StringFlag{
+			Name:  "profile",
+			Usage: "write profiling output to this file",
+		},
 	}
 }
 
 func before(c *cli.Context) error {
 	if len(c.Args()) < 2 {
 		cli.ShowAppHelp(c)
-		fmt.Fprintf(os.Stderr, "missing one or both integers\n")
-		os.Exit(1)
+		log.Fatal("missing one or both integers")
 	}
 
 	for i := 0; i < 2; i++ {
 		val, err := strconv.ParseUint(c.Args()[i], 10, 64)
 		if err != nil {
 			cli.ShowAppHelp(c)
-			fmt.Fprintf(os.Stderr, "error parsing arg %d: %s\n", i, err)
-			os.Exit(1)
+			log.Fatalf("error parsing arg %d: %s\n", i, err)
 		}
 		args[i] = val
 	}
@@ -59,14 +63,23 @@ func before(c *cli.Context) error {
 		algo = primes.EratosthenesAlgo
 	default:
 		cli.ShowAppHelp(c)
-		fmt.Fprintf(os.Stderr, "unknown algorithm: %s\n", algopt)
-		os.Exit(1)
+		log.Fatalf("unknown algorithm: %s\n", algopt)
 	}
 
 	return nil
 }
 
 func run(c *cli.Context) {
+	fn := c.GlobalString("profile")
+	if len(fn) > 0 {
+		f, err := os.Create(fn)
+		if err != nil {
+			log.Fatal(err)
+		}
+		pprof.StartCPUProfile(f)
+		defer pprof.StopCPUProfile()
+	}
+
 	ps := primes.Between(args[0], args[1], algo)
 	l := len(ps)
 	if c.GlobalBool("print") && l > 0 {
