@@ -20,7 +20,10 @@ test:
 
 coverage: .acc.out
 
-.acc.out: $(GO_FILES)
+sievealgo_string.go: sieve.go
+	go generate
+
+.acc.out: $(GO_FILES) sievealgo_string.go
 	@echo "mode: set" > .acc.out
 	@for pkg in $(GO_PKGS); do \
 		cmd="godep go test -v -coverprofile=profile.out $$pkg"; \
@@ -51,11 +54,11 @@ clean:
 
 save: Godeps/Godeps.json
 	
-Godeps/Godeps.json: $(GO_FILES)
+Godeps/Godeps.json: $(GO_FILES) sievealgo_string.go
 	@rm -rf ./Godeps
 	GOOS=linux GOARCH=amd64 godep save ./...
 
-$(EXECUTABLE): $(GO_FILES)
+$(EXECUTABLE): $(GO_FILES) sievealgo_string.go
 	godep go build -v -o $(EXECUTABLE) $(EXECUTABLE_PKG)
 
 .PHONY: all lint test coverage coveralls build clean save

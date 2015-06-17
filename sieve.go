@@ -2,14 +2,6 @@ package primes
 
 import "math"
 
-// SieveAlgo is an enum representing different kinds of sieve algorithms
-type SieveAlgo int
-
-const (
-	// EratosthenesAlgo is the sieve of eratosthene algorithm
-	EratosthenesAlgo SieveAlgo = iota
-)
-
 // Sieve is a simple interface for different sieve algorithms
 type Sieve interface {
 	IsPrime(uint64) bool
