@@ -15,6 +15,7 @@ const (
 )
 
 var (
+	// SieveAlgos is a list of available sieve algorithms
 	SieveAlgos []SieveAlgo
 )
 
