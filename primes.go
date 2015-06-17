@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/dustin/go-humanize"
+	"github.com/jbarham/primegen.go"
 )
 
 // ErrUnknownSieveAlgo is returned when an invalid sieve algorithm was selected
@@ -25,7 +26,7 @@ func getSieve(n uint64, algo SieveAlgo) Sieve {
 	case SundaramAlgo:
 		return NewSundaram(n)
 	case AtkinAlgo:
-		return NewAtkin(n)
+		return primegen.New()
 	}
 
 	return nil
@@ -45,28 +46,26 @@ func Between(a, b uint64, algo SieveAlgo, stats bool) ([]uint64, error) {
 	}
 
 	ret := make([]uint64, 0, b-a+1)
-	for i := a; i <= b; i++ {
-		if s.IsPrime(i) {
-			ret = append(ret, i)
-		}
+	s.SkipTo(a)
+	for i := s.Next(); i <= b; i = s.Next() {
+		ret = append(ret, i)
 	}
 
-	printStats(stats, a, b, algo, start, len(ret), s.Len())
+	printStats(stats, a, b, algo, start, len(ret))
 
 	return ret, nil
 }
 
-func printStats(stats bool, a, b uint64, algo SieveAlgo, start time.Time, l int, mem uint64) {
+func printStats(stats bool, a, b uint64, algo SieveAlgo, start time.Time, l int) {
 	if !stats {
 		return
 	}
 
-	fmt.Fprintf(os.Stderr, "found %s primes between %s and %s (inclusive) in %v using %s of memory using %s\n",
+	fmt.Fprintf(os.Stderr, "found %s primes between %s and %s (inclusive) in %v using %s\n",
 		humanize.Comma(int64(l)),
 		humanize.Comma(int64(a)),
 		humanize.Comma(int64(b)),
 		time.Now().Sub(start),
-		humanize.Bytes(mem),
 		algo)
 }
 
@@ -85,21 +84,20 @@ func Write(w io.Writer, a, b uint64, algo SieveAlgo, stats bool) error {
 
 	n := 0
 	buf := bufio.NewWriter(w)
-	for i := a; i <= b; i++ {
-		if s.IsPrime(i) {
-			n++
-			buf.Write([]byte(fmt.Sprintf("%d\n", i)))
-		}
+	s.SkipTo(a)
+	for i := s.Next(); i <= b; i = s.Next() {
+		n++
+		buf.Write([]byte(fmt.Sprintf("%d\n", i)))
 	}
 
-	printStats(stats, a, b, algo, start, n, s.Len())
+	printStats(stats, a, b, algo, start, n)
 
 	return buf.Flush()
 }
 
 // IsPrime returns whether val isa prime
 func IsPrime(val uint64) bool {
-	if val == 0 || val == 1 {
+	if val < 2 {
 		return false
 	}
 

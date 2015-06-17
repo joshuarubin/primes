@@ -10,7 +10,15 @@ import (
 func TestPrimes(t *testing.T) {
 	max := uint64(10000)
 
-	Convey("Between should work", t, func() {
+	Convey("Primes should be calculated correctly with different algorithms", t, func() {
+		Convey("IsPrime should be correct", func() {
+			So(IsPrime(0), ShouldBeFalse)
+			So(IsPrime(1), ShouldBeFalse)
+			So(IsPrime(2), ShouldBeTrue)
+			So(IsPrime(3), ShouldBeTrue)
+			So(IsPrime(4), ShouldBeFalse)
+		})
+
 		Convey("for invalid algorithms", func() {
 			primes, err := Between(0, max, SieveAlgo(999), false)
 			So(primes, ShouldResemble, []uint64(nil))

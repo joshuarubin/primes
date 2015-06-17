@@ -1,6 +1,7 @@
 package primes
 
 import (
+	"math"
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
@@ -10,21 +11,12 @@ func TestEratosthenes(t *testing.T) {
 	Convey("Eratosthene algorithm should work", t, func() {
 		max := uint64(10000)
 		s := NewEratosthenes(max)
-		So(s.Len(), ShouldEqual, 1251)
 		numPrimes := 0
-		for i := uint64(0); i <= max; i++ {
-			if s.IsPrime(i) {
-				numPrimes++
-				So(IsPrime(i), ShouldBeTrue)
-			} else {
-				So(IsPrime(i), ShouldBeFalse)
-			}
+		for i := s.Next(); i <= max; i = s.Next() {
+			numPrimes++
+			So(IsPrime(i), ShouldBeTrue)
 		}
 		So(numPrimes, ShouldEqual, 1229)
-		ps := s.ListPrimes()
-		So(len(ps), ShouldEqual, 1230)
-		for _, p := range ps {
-			So(IsPrime(p), ShouldBeTrue)
-		}
+		So(s.Next(), ShouldEqual, uint64(math.MaxUint64))
 	})
 }

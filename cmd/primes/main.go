@@ -34,7 +34,7 @@ func init() {
 		},
 		cli.StringFlag{
 			Name:  "algorithm, a",
-			Usage: "which algorithm to use [eratosthenes, sundaram]",
+			Usage: "which algorithm to use [eratosthenes, sundaram, atkin]",
 		},
 		cli.StringFlag{
 			Name:  "profile",

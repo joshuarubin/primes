@@ -4,9 +4,8 @@ import "math"
 
 // Sieve is a simple interface for different sieve algorithms
 type Sieve interface {
-	IsPrime(uint64) bool
-	Len() uint64
-	ListPrimes() []uint64
+	Next() uint64
+	SkipTo(uint64)
 }
 
 func sqrt(val uint64) uint64 {
