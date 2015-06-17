@@ -3,7 +3,7 @@
 //
 // The primegen Go package is a port of D. J. Bernstein's original implementation
 // in C (http://cr.yp.to/primegen.html).
-package atkin
+package primegen
 
 import (
 	"bufio"

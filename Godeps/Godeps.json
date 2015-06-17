@@ -15,6 +15,10 @@
 			"Rev": "00897f070f09f194c26d65afae734ba4c32404e8"
 		},
 		{
+			"ImportPath": "github.com/jbarham/primegen.go",
+			"Rev": "8c6d67b1f3fcfa20e1cf1206b1eec6f84a91e629"
+		},
+		{
 			"ImportPath": "github.com/jtolds/gls",
 			"Rev": "9a4a02dbe491bef4bab3c24fd9f3087d6c4c6690"
 		},

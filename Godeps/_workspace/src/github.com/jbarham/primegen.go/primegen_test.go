@@ -1,4 +1,4 @@
-package atkin
+package primegen
 
 import (
 	"crypto/md5"

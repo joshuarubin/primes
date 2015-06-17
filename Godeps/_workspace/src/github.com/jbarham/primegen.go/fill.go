@@ -1,4 +1,4 @@
-package atkin
+package primegen
 
 func (pg *Primegen) fill() {
 	var bits0, bits1, bits2, bits3, bits4, bits5, bits6, bits7 uint32

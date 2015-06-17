@@ -1,14 +1,14 @@
 package primes
 
 import (
-	"github.com/joshuarubin/primes/atkin"
+	"github.com/jbarham/primegen.go"
 	"github.com/joshuarubin/primes/bitset"
 )
 
 // Atkin is a Sieve that is calculated using the sieve of atkin algorithm
 type Atkin struct {
 	bitset.Bitset
-	pg    *atkin.Primegen
+	pg    *primegen.Primegen
 	limit uint64
 }
 
@@ -17,7 +17,7 @@ type Atkin struct {
 func NewAtkin(limit uint64) Sieve {
 	ret := Atkin{
 		Bitset: bitset.New(limit),
-		pg:     atkin.New(),
+		pg:     primegen.New(),
 		limit:  limit,
 	}
 
