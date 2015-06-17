@@ -9,17 +9,24 @@ import (
 )
 
 // Between returns a list of all primes between a and b, inclusive
-func Between(a, b uint64) []uint64 {
+func Between(a, b uint64, algo SieveAlgo) []uint64 {
 	start := time.Now()
-
-	ret := []uint64{}
 
 	if b < a {
 		// ensure a <= b
 		a, b = b, a
 	}
 
-	s := NewSieve(b)
+	ret := []uint64{}
+	var s Sieve
+
+	switch algo {
+	case EratosthenesAlgo:
+		s = NewEratosthenes(b)
+	default:
+		fmt.Fprintf(os.Stderr, "unknown sieve algorithm: %v", algo)
+		return ret
+	}
 
 	for i := a; i <= b; i++ {
 		if s.IsPrime(i) {
@@ -27,9 +34,10 @@ func Between(a, b uint64) []uint64 {
 		}
 	}
 
-	fmt.Fprintf(os.Stderr, "found %s primes between %d and %d (inclusive) in %v using %s of memory\n",
+	fmt.Fprintf(os.Stderr, "found %s primes between %s and %s (inclusive) in %v using %s of memory\n",
 		humanize.Comma(int64(len(ret))),
-		a, b,
+		humanize.Comma(int64(a)),
+		humanize.Comma(int64(b)),
 		time.Now().Sub(start),
 		humanize.Bytes(s.Len()))
 

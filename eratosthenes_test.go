@@ -7,10 +7,10 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
-func TestSieve(t *testing.T) {
-	Convey("Sieve should work", t, func() {
+func TestEratosthenes(t *testing.T) {
+	Convey("Eratosthene algorithm should work", t, func() {
 		max := uint64(10000)
-		s := NewSieve(max)
+		s := NewEratosthenes(max)
 		So(s.Len(), ShouldEqual, 1251)
 		numPrimes := 0
 		for i := uint64(0); i <= max; i++ {
